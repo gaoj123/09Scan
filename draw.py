@@ -2,69 +2,100 @@ from display import *
 from matrix import *
 from math import *
 from gmath import *
+from random import randint
+
+#Returns list of three vals (sum of 2 primes)
+def primeNr(interval):
+    primes=[]
+    toRet=[]
+    #if interval itself should be included, then change this to range(2, interval + 1)
+    for i in range(2, interval):
+        isPrime = True
+        for j in range(2, int(math.sqrt(i)) + 1):
+            if i % j == 0:
+                isPrime = False
+                break
+        if isPrime:
+            primes.append(i)
+    #print primes
+    for i in range(3):
+        ran1=randint(0,len(primes)-1)
+        rand2=randint(0,len(primes)-1)
+        sumPrime=(primes[ran1]+primes[rand2])%255
+        toRet.append(sumPrime)
+    return toRet
+
+#print primeNr(200)
 
 def scanline_convert(polygons, i, screen, zbuffer ):
-    lines=[]
-    while i<(len(polygons)/3):
-        p1=polygons[i*3+0]
-        p2=polygons[i*3+1]
-        p3=polygons[i*3+2]
-        p1y=p1[1]
-        p2y=p2[1]
-        p3y=p3[1]
-        topP=[]
-        botP=[]
-        midP=[]
-        yTop=max(p1y,p2y,p3y)
-        yMin=min(p1y,p2y,p3y)
-        if max(p1y,p2y,p3y)==p1y:
-            topP=p1
-            if yMin!=p2y:
-                botP=p3
-                midP=p2
-            else:
-                botP=p2
-                midP=p3
-        elif max(p1y,p2y,p3y)==p2y:
-            topP=p2
-            if yMin!=p1y:
-                botP=p3
-                midP=p1
-            else:
-                botP=p1
-                midP=p3
+    #lines=[]
+    #while i<(len(polygons)/3):
+    p1=polygons[i*3+0]
+    p2=polygons[i*3+1]
+    p3=polygons[i*3+2]
+    p1y=p1[1]
+    p2y=p2[1]
+    p3y=p3[1]
+    topP=[]
+    botP=[]
+    midP=[]
+    color=[]
+    toRet=primeNr(200)
+    for j in range(3):
+        color.append(toRet[j])
+    yTop=max(p1y,p2y,p3y)
+    yMin=min(p1y,p2y,p3y)
+    if max(p1y,p2y,p3y)==p1y:
+        topP=p1
+        if yMin!=p2y:
+            botP=p3
+            midP=p2
         else:
-            topP=p3
-            if yMin!=p1y:
-                botP=p2
-                midP=p1
+            botP=p2
+            midP=p3
+    elif max(p1y,p2y,p3y)==p2y:
+        topP=p2
+        if yMin!=p1y:
+            botP=p3
+            midP=p1
+        else:
+            botP=p1
+            midP=p3
+    else:
+        topP=p3
+        if yMin!=p1y:
+            botP=p2
+            midP=p1
+        else:
+            botP=p1
+            midP=p2
+    xBot=botP[0]
+    xTop=topP[0]
+    yMid=midP[1]
+    xMid=midP[0]
+    yTop=topP[1]
+    yBot=botP[1]
+    yVal=yBot
+    while yVal<yTop:
+        x0=xBot
+        x1=xBot
+        delta0=(xTop-xBot+0.0)/(yTop-yBot) ##check when denom=0
+        delta1=0
+        if yVal<yMid:
+            delta1=(xMid-xBot+0.0)/(yMid-yBot)
+        else:
+            if yVal==yMid:
+                x1=xMid
+            if yTop==yMid: ##if T=M in triangle
+                delta1=yTop ##end scanline bc done
             else:
-                botP=p1
-                midP=p2
-        xBot=botP[0]
-        xTop=topP[0]
-        yMid=midP[1]
-        xMid=midP[0]
-        yTop=topP[1]
-        yBot=botP[1]
-        yVal=yBot
-        while yVal<yTop:
-            x0=xBot
-            x1=xBot
-            delta0=(xTop-xBot+0.0)/(yTop-yBot) ##check when denom=0
-            delta1=0
-            if yVal<yMid:
-                delta1=(xMid-xBot+0.0)/(yMid-yBot)
-            else:
-                if yVal==yMid:
-                    x1=xMid
                 delta1=(xTop-xMid+0.0)/(yTop-yMid)
-            #draw_line(
-            yVal+=1
-            x0+=delta0
-            x1+=delta1
+        draw_line( int(round(x0)), yVal, 0, int(round(x1)), yVal, 0, screen, zbuffer, color )
+        yVal+=1
+        x0+=delta0
+        x1+=delta1
             #add point after turning float coords to ints
-        i+=1
+        #i+=1
     #draw_lines( lines, screen, zbuffer, color ) #lines is matrix, change color
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
@@ -104,6 +135,7 @@ def draw_polygons( matrix, screen, zbuffer, color ):
                        int(matrix[point+2][1]),
                        matrix[point+2][2],
                        screen, zbuffer, color)
+        scanline_convert(matrix,point/3,screen,zbuffer)
         point+= 3
 
 
