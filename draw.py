@@ -63,6 +63,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
             yVal+=1
             x0+=delta0
             x1+=delta1
+            #add point after turning float coords to ints
         i+=1
     #draw_lines( lines, screen, zbuffer, color ) #lines is matrix, change color
 
