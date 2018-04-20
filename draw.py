@@ -4,7 +4,67 @@ from math import *
 from gmath import *
 
 def scanline_convert(polygons, i, screen, zbuffer ):
-    pass
+    lines=[]
+    while i<(len(polygons)/3):
+        p1=polygons[i*3+0]
+        p2=polygons[i*3+1]
+        p3=polygons[i*3+2]
+        p1y=p1[1]
+        p2y=p2[1]
+        p3y=p3[1]
+        topP=[]
+        botP=[]
+        midP=[]
+        yTop=max(p1y,p2y,p3y)
+        yMin=min(p1y,p2y,p3y)
+        if max(p1y,p2y,p3y)==p1y:
+            topP=p1
+            if yMin!=p2y:
+                botP=p3
+                midP=p2
+            else:
+                botP=p2
+                midP=p3
+        elif max(p1y,p2y,p3y)==p2y:
+            topP=p2
+            if yMin!=p1y:
+                botP=p3
+                midP=p1
+            else:
+                botP=p1
+                midP=p3
+        else:
+            topP=p3
+            if yMin!=p1y:
+                botP=p2
+                midP=p1
+            else:
+                botP=p1
+                midP=p2
+        xBot=botP[0]
+        xTop=topP[0]
+        yMid=midP[1]
+        xMid=midP[0]
+        yTop=topP[1]
+        yBot=botP[1]
+        yVal=yBot
+        while yVal<yTop:
+            x0=xBot
+            x1=xBot
+            delta0=(xTop-xBot+0.0)/(yTop-yBot) ##check when denom=0
+            delta1=0
+            if yVal<yMid:
+                delta1=(xMid-xBot+0.0)/(yMid-yBot)
+            else:
+                if yVal==yMid:
+                    x1=xMid
+                delta1=(xTop-xMid+0.0)/(yTop-yMid)
+            #draw_line(
+            yVal+=1
+            x0+=delta0
+            x1+=delta1
+        i+=1
+    #draw_lines( lines, screen, zbuffer, color ) #lines is matrix, change color
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0);
