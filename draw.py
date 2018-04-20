@@ -76,10 +76,12 @@ def scanline_convert(polygons, i, screen, zbuffer ):
     yTop=topP[1]
     yBot=botP[1]
     yVal=yBot
+    x0=xBot+0.0
+    x1=xBot+0.0
     while yVal<yTop:
-        x0=xBot
-        x1=xBot
-        delta0=(xTop-xBot+0.0)/(yTop-yBot) ##check when denom=0
+        #x0=xBot+0.0
+        #x1=xBot+0.0
+        delta0=(xTop-xBot+0.0)/(yTop-yBot)
         delta1=0
         if yVal<yMid:
             delta1=(xMid-xBot+0.0)/(yMid-yBot)
@@ -90,6 +92,9 @@ def scanline_convert(polygons, i, screen, zbuffer ):
                 delta1=yTop ##end scanline bc done
             else:
                 delta1=(xTop-xMid+0.0)/(yTop-yMid)
+        #print "d0 "+str(delta0)
+        #print "d1 "+str(delta1)
+        #print "x0 "+str(x0)+" x1 "+str(x1)+" y "+str(yVal)
         draw_line( int(round(x0)), yVal, 0, int(round(x1)), yVal, 0, screen, zbuffer, color )
         yVal+=1
         x0+=delta0
