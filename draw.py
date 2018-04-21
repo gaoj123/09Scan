@@ -71,6 +71,9 @@ def scanline_convert(polygons, i, screen, zbuffer ):
             midP=p2
     xBot=botP[0]
     xTop=topP[0]
+    zTop=topP[2]
+    zMid=midP[2]
+    zBot=botP[2]
     yMid=midP[1]
     xMid=midP[0]
     yTop=topP[1]
@@ -78,13 +81,18 @@ def scanline_convert(polygons, i, screen, zbuffer ):
     yVal=yBot
     x0=xBot+0.0
     x1=xBot+0.0
+    z0=zBot+0.0
+    z1=zBot+0.0
     while yVal<yTop:
         #x0=xBot+0.0
         #x1=xBot+0.0
         delta0=(xTop-xBot+0.0)/(yTop-yBot)
         delta1=0
+        delta2=(zTop-zBot+0.0)/(yTop-yBot)
+        delta3=0
         if yVal<yMid:
             delta1=(xMid-xBot+0.0)/(yMid-yBot)
+            delta3=(zMid-zBot+0.0)/(yMid-yBot)
         else:
             if yVal==yMid:
                 x1=xMid
@@ -92,13 +100,16 @@ def scanline_convert(polygons, i, screen, zbuffer ):
                 delta1=yTop ##end scanline bc done
             else:
                 delta1=(xTop-xMid+0.0)/(yTop-yMid)
+                delta3=(zTop-zMid+0.0)/(yTop-yMid)
         #print "d0 "+str(delta0)
         #print "d1 "+str(delta1)
         #print "x0 "+str(x0)+" x1 "+str(x1)+" y "+str(yVal)
-        draw_line( int(round(x0)), yVal, 0, int(round(x1)), yVal, 0, screen, zbuffer, color )
+        draw_line( int(round(x0)), yVal, z0, int(round(x1)), yVal, z1, screen, zbuffer, color )
         yVal+=1
         x0+=delta0
         x1+=delta1
+        z0+=delta2
+        z1+=delta3
             #add point after turning float coords to ints
         #i+=1
     #draw_lines( lines, screen, zbuffer, color ) #lines is matrix, change color
@@ -394,9 +405,16 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             d_east = -1 * B
             loop_start = y1
             loop_end = y
-
+    steps=loop_end-loop_start
+    #print "e "+str(loop_end)
+    #print "s "+str(loop_start)
+    if steps!=0:
+        delZ=(z1-z0)/steps
+    else:
+        delZ=0
+    z=z0
     while ( loop_start < loop_end ):
-        plot( screen, zbuffer, color, x, y, 0 )
+        plot( screen, zbuffer, color, x, y, z )
         if ( (wide and ((A > 0 and d > 0) or (A < 0 and d < 0))) or
              (tall and ((A > 0 and d < 0) or (A < 0 and d > 0 )))):
 
@@ -407,5 +425,6 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             x+= dx_east
             y+= dy_east
             d+= d_east
+        z+=delZ
         loop_start+= 1
-    plot( screen, zbuffer, color, x, y, 0 )
+    plot( screen, zbuffer, color, x, y, z )
