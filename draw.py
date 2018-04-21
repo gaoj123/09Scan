@@ -96,6 +96,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         else:
             if yVal==yMid:
                 x1=xMid
+                z1=zMid
             if yTop==yMid: ##if T=M in triangle
                 delta1=yTop ##end scanline bc done
             else:
