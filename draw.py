@@ -129,30 +129,30 @@ def draw_polygons( matrix, screen, zbuffer, color ):
     while point < len(matrix) - 2:
 
         normal = calculate_normal(matrix, point)[:]
-
+        print "sp"
         if normal[2] > 0:
-            draw_line( int(matrix[point][0]),
-                       int(matrix[point][1]),
-                       matrix[point][2],
-                       int(matrix[point+1][0]),
-                       int(matrix[point+1][1]),
-                       matrix[point+1][2],
-                       screen, zbuffer, color)
-            draw_line( int(matrix[point+2][0]),
-                       int(matrix[point+2][1]),
-                       matrix[point+2][2],
-                       int(matrix[point+1][0]),
-                       int(matrix[point+1][1]),
-                       matrix[point+1][2],
-                       screen, zbuffer, color)
-            draw_line( int(matrix[point][0]),
-                       int(matrix[point][1]),
-                       matrix[point][2],
-                       int(matrix[point+2][0]),
-                       int(matrix[point+2][1]),
-                       matrix[point+2][2],
-                       screen, zbuffer, color)
-        scanline_convert(matrix,point/3,screen,zbuffer)
+            #draw_line( int(matrix[point][0]),
+            #            int(matrix[point][1]),
+            #            matrix[point][2],
+            #            int(matrix[point+1][0]),
+            #            int(matrix[point+1][1]),
+            #            matrix[point+1][2],
+            #            screen, zbuffer, color)
+            # draw_line( int(matrix[point+2][0]),
+            #            int(matrix[point+2][1]),
+            #            matrix[point+2][2],
+            #            int(matrix[point+1][0]),
+            #            int(matrix[point+1][1]),
+            #            matrix[point+1][2],
+            #            screen, zbuffer, color)
+            # draw_line( int(matrix[point][0]),
+            #            int(matrix[point][1]),
+            #            matrix[point][2],
+            #            int(matrix[point+2][0]),
+            #            int(matrix[point+2][1]),
+            #            matrix[point+2][2],
+            #            screen, zbuffer, color)
+            scanline_convert(matrix,point/3,screen,zbuffer)
         point+= 3
 
 
