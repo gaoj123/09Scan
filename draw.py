@@ -121,6 +121,8 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         z1+=delta3
     if yVal==yTop or doneLines==True:
         draw_line(int(xTop), int(yTop), zTop, int(xTop), int(yTop), zTop, screen, zbuffer, color)
+    else:
+        print "alt"
         #draw_line( int(round(x0)), yVal, z0, int(round(x1)), yVal, z1, screen, zbuffer, color )
         #yVal+=1
             #add point after turning float coords to ints
