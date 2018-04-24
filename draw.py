@@ -8,7 +8,6 @@ from random import randint
 def primeNr(interval):
     primes=[]
     toRet=[]
-    #if interval itself should be included, then change this to range(2, interval + 1)
     for i in range(2, interval):
         isPrime = True
         for j in range(2, int(math.sqrt(i)) + 1):
@@ -17,7 +16,6 @@ def primeNr(interval):
                 break
         if isPrime:
             primes.append(i)
-    #print primes
     for i in range(3):
         ran1=randint(0,len(primes)-1)
         rand2=randint(0,len(primes)-1)
@@ -25,7 +23,6 @@ def primeNr(interval):
         toRet.append(sumPrime)
     return toRet
 
-#print primeNr(200)
 
 def scanline_convert(polygons, i, screen, zbuffer ):
     #lines=[]
@@ -40,7 +37,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
     botP=[]
     midP=[]
     color=[]
-    toRet=primeNr(200)
+    toRet=primeNr(300)
     for j in range(3):
         color.append(toRet[j])
     yTop=max(p1y,p2y,p3y)
@@ -72,14 +69,13 @@ def scanline_convert(polygons, i, screen, zbuffer ):
     xBot=int(botP[0])
     xTop=int(topP[0])
     zTop=topP[2]
-    zMid=int(midP[2])
+    zMid=midP[2]
     zBot=botP[2]
     yMid=int(midP[1])
     xMid=int(midP[0])
     yTop=int(topP[1])
     yBot=int(botP[1])
     yVal=yBot
-    print str(yTop)
     x0=xBot+0.0
     x1=xBot+0.0
     z0=zBot+0.0
@@ -106,13 +102,8 @@ def scanline_convert(polygons, i, screen, zbuffer ):
             else:
                 if int(round(yVal))==yTop-1:
                     doneLines=True
-                else:
-                    print "yVal "+str(yVal)+" yTop "+str(yTop)
                 delta1=(xTop-xMid+0.0)/(yTop-yMid)
                 delta3=(zTop-zMid+0.0)/(yTop-yMid)
-        #print "d0 "+str(delta0)
-        #print "d1 "+str(delta1)
-        #print "x0 "+str(x0)+" x1 "+str(x1)+" y "+str(yVal)
         draw_line( int(round(x0)), int(round(yVal)), z0, int(round(x1)), int(round(yVal)), z1, screen, zbuffer, color )
         yVal+=1
         x0+=delta0
@@ -121,13 +112,7 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         z1+=delta3
     if yVal==yTop or doneLines==True:
         draw_line(int(xTop), int(yTop), zTop, int(xTop), int(yTop), zTop, screen, zbuffer, color)
-    else:
-        print "alt"
-        #draw_line( int(round(x0)), yVal, z0, int(round(x1)), yVal, z1, screen, zbuffer, color )
-        #yVal+=1
-            #add point after turning float coords to ints
-        #i+=1
-    #draw_lines( lines, screen, zbuffer, color ) #lines is matrix, change color
+        
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0);
@@ -143,29 +128,7 @@ def draw_polygons( matrix, screen, zbuffer, color ):
     while point < len(matrix) - 2:
 
         normal = calculate_normal(matrix, point)[:]
-        print "sp"
         if normal[2] > 0:
-            #draw_line( int(matrix[point][0]),
-            #            int(matrix[point][1]),
-            #            matrix[point][2],
-            #            int(matrix[point+1][0]),
-            #            int(matrix[point+1][1]),
-            #            matrix[point+1][2],
-            #            screen, zbuffer, color)
-            # draw_line( int(matrix[point+2][0]),
-            #            int(matrix[point+2][1]),
-            #            matrix[point+2][2],
-            #            int(matrix[point+1][0]),
-            #            int(matrix[point+1][1]),
-            #            matrix[point+1][2],
-            #            screen, zbuffer, color)
-            # draw_line( int(matrix[point][0]),
-            #            int(matrix[point][1]),
-            #            matrix[point][2],
-            #            int(matrix[point+2][0]),
-            #            int(matrix[point+2][1]),
-            #            matrix[point+2][2],
-            #            screen, zbuffer, color)
             scanline_convert(matrix,point/3,screen,zbuffer)
         point+= 3
 
@@ -374,13 +337,17 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
     if x0 > x1:
         xt = x0
         yt = y0
+        zt=z0
         x0 = x1
         y0 = y1
         x1 = xt
         y1 = yt
+        z1=zt
+        z0=z1
 
     x = x0
     y = y0
+    z=z0
     A = 2 * (y1 - y0)
     B = -2 * (x1 - x0)
     wide = False
@@ -421,13 +388,10 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             loop_start = y1
             loop_end = y
     steps=loop_end-loop_start
-    #print "e "+str(loop_end)
-    #print "s "+str(loop_start)
     if steps!=0:
         delZ=(z1-z0)/steps
     else:
         delZ=0
-    z=z0
     while ( loop_start < loop_end ):
         plot( screen, zbuffer, color, x, y, z )
         if ( (wide and ((A > 0 and d > 0) or (A < 0 and d < 0))) or
