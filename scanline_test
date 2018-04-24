@@ -12,6 +12,7 @@ display
 #clear the screen, test sphere
 clear
 pop
+push
 sphere
 0 0 0 200
 display
@@ -89,3 +90,4 @@ x 30
 torus
 0 0 0 40 150
 display
+clear
