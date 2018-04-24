@@ -69,27 +69,30 @@ def scanline_convert(polygons, i, screen, zbuffer ):
         else:
             botP=p1
             midP=p2
-    xBot=botP[0]
-    xTop=topP[0]
+    xBot=int(botP[0])
+    xTop=int(topP[0])
     zTop=topP[2]
-    zMid=midP[2]
+    zMid=int(midP[2])
     zBot=botP[2]
-    yMid=midP[1]
-    xMid=midP[0]
-    yTop=topP[1]
-    yBot=botP[1]
+    yMid=int(midP[1])
+    xMid=int(midP[0])
+    yTop=int(topP[1])
+    yBot=int(botP[1])
     yVal=yBot
+    print str(yTop)
     x0=xBot+0.0
     x1=xBot+0.0
     z0=zBot+0.0
     z1=zBot+0.0
+    doneLines=False
+    #draw_line( int(round(x0)), yVal, z0, int(round(x1)), yVal, z1, screen, zbuffer, color )
     while yVal<yTop:
         #x0=xBot+0.0
         #x1=xBot+0.0
         delta0=(xTop-xBot+0.0)/(yTop-yBot)
-        delta1=0
+        delta1=0.0
         delta2=(zTop-zBot+0.0)/(yTop-yBot)
-        delta3=0
+        delta3=0.0
         if yVal<yMid:
             delta1=(xMid-xBot+0.0)/(yMid-yBot)
             delta3=(zMid-zBot+0.0)/(yMid-yBot)
@@ -98,19 +101,28 @@ def scanline_convert(polygons, i, screen, zbuffer ):
                 x1=xMid
                 z1=zMid
             if yTop==yMid: ##if T=M in triangle
-                delta1=yTop ##end scanline bc done
+                delta1=0 ##end scanline bc done
+                doneLines=True
             else:
+                if int(round(yVal))==yTop-1:
+                    doneLines=True
+                else:
+                    print "yVal "+str(yVal)+" yTop "+str(yTop)
                 delta1=(xTop-xMid+0.0)/(yTop-yMid)
                 delta3=(zTop-zMid+0.0)/(yTop-yMid)
         #print "d0 "+str(delta0)
         #print "d1 "+str(delta1)
         #print "x0 "+str(x0)+" x1 "+str(x1)+" y "+str(yVal)
-        draw_line( int(round(x0)), yVal, z0, int(round(x1)), yVal, z1, screen, zbuffer, color )
+        draw_line( int(round(x0)), int(round(yVal)), z0, int(round(x1)), int(round(yVal)), z1, screen, zbuffer, color )
         yVal+=1
         x0+=delta0
         x1+=delta1
         z0+=delta2
         z1+=delta3
+    if yVal==yTop or doneLines==True:
+        draw_line(int(xTop), int(yTop), zTop, int(xTop), int(yTop), zTop, screen, zbuffer, color)
+        #draw_line( int(round(x0)), yVal, z0, int(round(x1)), yVal, z1, screen, zbuffer, color )
+        #yVal+=1
             #add point after turning float coords to ints
         #i+=1
     #draw_lines( lines, screen, zbuffer, color ) #lines is matrix, change color
