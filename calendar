@@ -1,0 +1,160 @@
+#Background
+push
+move
+100 100 0
+rotate
+x 25
+rotate
+y 20
+box
+0 300 0 300 300 30
+
+#5 Rings
+push
+move
+50 290 0
+rotate
+z 90
+torus
+0 0 -15 5 20
+pop
+push
+move
+100 290 0
+rotate
+z 90
+torus
+0 0 -15 5 20
+pop
+push
+move
+150 290 0
+rotate
+z 90
+torus
+0 0 -15 5 20
+pop
+push
+move
+200 290 0
+rotate
+z 90
+torus
+0 0 -15 5 20
+pop
+push
+move
+250 290 0
+rotate
+z 90
+torus
+0 0 -15 5 20
+pop
+
+#Slots
+push
+move
+20 250 20
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+pop
+pop
+pop
+pop
+push
+move
+20 190 20
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+pop
+pop
+pop
+pop
+push
+move
+20 130 20
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+pop
+pop
+pop
+pop
+push
+move
+20 70 20
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+push
+move
+70 0 0
+box
+0 0 0 50 50 10
+#push
+#move
+#150 280 30
+#sphere
+#0 0 0 15
+#rotate
+#x 30
+#rotate
+#y 50
+#box
+#0 0 0 10 30 10
+display
+save
+calendar.png

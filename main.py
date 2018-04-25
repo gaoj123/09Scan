@@ -13,7 +13,21 @@ edges = []
 polygons = []
 transform = new_matrix()
 
-if len(argv) != 2:
-    parse_file( 'script', edges, polygons, transform, screen, zbuffer, color )
-else:
-    parse_file( argv[1], edges, polygons, transform, screen, zbuffer, color )
+#Scan line test
+#parse_file('scanline_test', edges, polygons, transform, screen, zbuffer, color )
+#edges=[]
+#polygons=[]
+
+
+#Runs Mr. DW's robot script
+parse_file( 'script', edges, polygons, transform, screen, zbuffer, color )
+edges=[]
+polygons=[]
+
+#Runs my calendar script
+parse_file( 'calendar', edges, polygons, transform, screen, zbuffer, color )
+
+#if len(argv) != 2:
+    #parse_file( 'script', edges, polygons, transform, screen, zbuffer, color )
+#else:
+    #parse_file( argv[1], edges, polygons, transform, screen, zbuffer, color )
